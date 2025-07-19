@@ -65,3 +65,11 @@ Iris - Without ensemble:
 Accuracy score: 0.9888888888888889
 Finished in: 4m and 54s
 
+iris - Without ensemble:
+Accuracy score: 0.9736842105263158
+Finished in: 4m and 53s
+
+iris - With ensemble:
+Accuracy score: 0.9736842105263158
+Finished in: 4m and 55s
+
