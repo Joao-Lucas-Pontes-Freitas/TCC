@@ -1,0 +1,67 @@
+Resultados dos Experimentos AutoML
+========================================
+
+IMDB - Without ensemble:
+Accuracy score: 0.78168
+Finished in: 29m and 53s
+
+IMDB - With ensemble:
+Accuracy score: 0.80992
+Finished in: 31m and 26s
+
+Iris - With ensemble:
+Accuracy score: 0.9736842105263158
+Finished in: 4m and 56s
+
+Iris - Without ensemble:
+Accuracy score: 0.9736842105263158
+Finished in: 4m and 56s
+
+Digits - With ensemble:
+Accuracy score: 0.9888888888888889
+Finished in: 9m and 52s
+
+Digits - Without ensemble:
+Accuracy score: 0.9888888888888889
+Finished in: 9m and 52s
+
+IMDB - Without ensemble:
+Accuracy score: 0.8589333333333333
+Concluído em: 2703.81s
+
+IMDB - With ensemble:
+Accuracy score: 0.8612666666666666
+Concluído em: 2820.22s
+
+Digits - Without ensemble:
+Accuracy score: 0.9888888888888889
+Finished in: 4m and 57s
+
+Dgitis - With ensemble:
+Accuracy score: 0.9911111111111112
+Finished in: 4m and 58s
+
+IMDB - Without ensemble:
+Accuracy score: 0.8548
+Finished in: 45m and 2s
+
+IMDB - With ensemble:
+Accuracy score: 0.8581
+Finished in: 45m and 43s
+
+Iris - Without ensemble:
+Accuracy score: 0.9736842105263158
+Finished in: 0m and 55s
+
+Iris - With ensemble:
+Accuracy score: 0.9736842105263158
+Finished in: 0m and 56s
+
+Iris - With ensemble:
+Accuracy score: 0.9888888888888889
+Finished in: 4m and 54s
+
+Iris - Without ensemble:
+Accuracy score: 0.9888888888888889
+Finished in: 4m and 54s
+
