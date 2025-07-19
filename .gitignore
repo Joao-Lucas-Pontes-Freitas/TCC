@@ -76,11 +76,16 @@ docs/_build/
 target/
 
 # Jupyter Notebook
-.ipynb_checkpoints
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+.jupyter/
+.local/share/jupyter/
+*.nb.html
 
 # IPython
 profile_default/
 ipython_config.py
+.ipython/
 
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
@@ -205,3 +210,57 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Project specific
+# Temporary files and folders
+results/tmp/
+temp/
+tmp/
+
+# Data Science and ML files
+*.pkl
+*.joblib
+*.h5
+*.hdf5
+*.parquet
+*.feather
+*.dill
+*.model
+*.weights
+*.ckpt
+checkpoint/
+checkpoints/
+*.tfrecord
+*.tfevents.*
+
+# Plots and figures
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*.svg
+!docs/**/*.png
+!docs/**/*.jpg
+!docs/**/*.jpeg
+!docs/**/*.pdf
+!docs/**/*.svg
+
+# Large data files
+*.csv
+*.tsv
+*.json
+*.jsonl
+*.xml
+*.xlsx
+*.xls
+!**/small_*.csv
+!**/sample_*.csv
+!**/test_*.csv
+
+# AutoML outputs
+**/AutoML*.log
+**/smac3-output/
+**/optuna-output/
+**/hyperopt-output/
+space.json
+distributed.log
