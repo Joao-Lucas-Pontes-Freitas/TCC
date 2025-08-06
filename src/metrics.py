@@ -2,23 +2,22 @@
 Módulo para cálculo de métricas e avaliação de modelos
 """
 import numpy as np
-import pandas as pd
 from sklearn import metrics, model_selection
 
 
-def evaluate_metrics(automl, X_test, y_test):
+def evaluate_metrics(model, X_test, y_test):
     """
     Calcula métricas principais do modelo
     
     Args:
-        automl: Modelo treinado do AutoSklearn
+        model: Modelo treinado
         X_test: Dados de teste
         y_test: Labels de teste
     
     Returns:
         dict: Dicionário com métricas calculadas
     """
-    y_pred = automl.predict(X_test)
+    y_pred = model.predict(X_test)
     accuracy = metrics.accuracy_score(y_test, y_pred)
     precision = metrics.precision_score(y_test, y_pred, average="weighted", zero_division=0)
     recall = metrics.recall_score(y_test, y_pred, average="weighted", zero_division=0)
