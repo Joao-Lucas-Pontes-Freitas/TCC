@@ -1,46 +1,60 @@
-"""
-Módulo para operações com MongoDB
-"""
+from __future__ import annotations
+
 import os
-from pathlib import Path
+from typing import Any, Mapping
 from pymongo import MongoClient
-from dotenv import load_dotenv
+from pymongo.errors import (
+    ServerSelectionTimeoutError, ConnectionFailure,
+    ConfigurationError, OperationFailure,
+)
 
-# Carrega variáveis de ambiente do arquivo .env
-env_path = Path(__file__).parent.parent / '.env'
-load_dotenv(dotenv_path=env_path)
+ENV_PATH = "/home/joao/Documentos/TCC/.env"
+APP_NAME = "TCC"
 
+def _env(name: str) -> str:
+    v = os.getenv(name)
+    if not v or not v.strip():
+        raise RuntimeError(f"variável de ambiente ausente: {name}")
+    return v.strip()
 
-def mongo_insert(doc: dict, mongo_uri: str = None, mongo_db: str = None, mongo_collection: str = None):
-    """
-    Insere um documento no MongoDB
-    
-    Args:
-        doc: Documento a ser inserido
-        mongo_uri: URI de conexão do MongoDB (se None, usa variável de ambiente)
-        mongo_db: Nome do banco de dados (se None, usa variável de ambiente)
-        mongo_collection: Nome da coleção (se None, usa variável de ambiente)
-    
-    Returns:
-        str: ID do documento inserido ou None em caso de erro
-    """
-    # Usar valores das variáveis de ambiente se não fornecidos
-    if mongo_uri is None:
-        mongo_uri = os.getenv("MONGODB_CONNECTION_STRING")
-    if mongo_db is None:
-        mongo_db = os.getenv("MONGODB_DB")
-    if mongo_collection is None:
-        mongo_collection = os.getenv("MONGODB_COLLECTION")
-    
-    client = None
+def _normalize_uri(uri: str, app_name: str = APP_NAME) -> str:
+    """Garante retryWrites, w=majority e appName sem duplicar parâmetros."""
+    add = []
+    if "retryWrites=" not in uri:
+        add.append("retryWrites=true")
+    if "w=" not in uri:
+        add.append("w=majority")
+    if "appName=" not in uri:
+        add.append(f"appName={app_name}")
+    if add:
+        uri += ("&" if "?" in uri else "?") + "&".join(add)
+    return uri
+
+def get_client(uri: str | None = None) -> MongoClient:
+    uri = _normalize_uri((uri or _env("MONGODB_CONNECTION_STRING")).strip())
+    return MongoClient(
+        uri,
+        serverSelectionTimeoutMS=10000,
+        connectTimeoutMS=10000,
+        socketTimeoutMS=20000,
+    )
+
+def mongo_insert(doc: Mapping[str, Any],
+                 mongo_db: str | None = None,
+                 mongo_collection: str | None = None,
+                 mongo_uri: str | None = None) -> str:
+    """Insere um documento e retorna o _id como string."""
+    db = mongo_db or _env("MONGODB_DB")
+    coll = mongo_collection or _env("MONGODB_COLLECTION")
+    client: MongoClient | None = None
     try:
-        client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
-        collection = client[mongo_db][mongo_collection]
-        res = collection.insert_one(doc)
+        client = get_client(mongo_uri)
+        client.admin.command("ping")
+        res = client[db][coll].insert_one(dict(doc))
         return str(res.inserted_id)
-    except Exception as e:
-        print(f"Erro ao inserir no MongoDB: {e}")
-        return None
+    except (ServerSelectionTimeoutError, ConnectionFailure,
+            ConfigurationError, OperationFailure) as e:
+        raise RuntimeError(f"falha Mongo: {e}") from e
     finally:
         if client:
             client.close()
